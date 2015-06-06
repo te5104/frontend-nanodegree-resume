@@ -155,24 +155,55 @@ function initializeMap() {
     var lon = placeData.geometry.location.lng();  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
-
+    //
+    var place1 = "";
+    var sjo = "<h3>Cisco Systems</h3>" +
+                  "<p> Cisco's campus in San Jose CA; one of two places in the U.S.</p>" +
+                  "<p> where CCIE exams are administered.</p>" +
+                  "<p> CCIE #6082 was awarded here on August 4, 2000.</p>";
+    var brook = "<h3>AT&T Mobility Services LLC</h3>" + 
+                "<p>HQ for AT&T Mobility Services and <i>Consumer <b>I</b>nternet <b>o</b>f <b>T</b>hings.</i>";
+    var marietta = "<p>My humble abode.</p>";
+    var probLost = "<h3>Oh snap! We're probably lost!</h3>";
+    var lombard = "<h4>First HQ of Frontier Unlimited LLC and former residence in Illinois.</h4>";
+    var rgrove = "<h4>Triton College</h4>" + 
+                "<p>Where I first programmed an IBM mainframe via a teletype machine as an exercise in Algebra 101.</p>" +
+                "<p>That experience is what got me interested in computer science and programming.</p>";  
+    // infoWindows are the little helper windows that open when you click
+    // or hover over a pin on a map. They usually contain more information
+    // about a location.   
+    var infowindow = new google.maps.InfoWindow({
+      content: place1
+    });
     // marker is an object with additional data about the pin for a single location
     var marker = new google.maps.Marker({
       map: map,
       position: placeData.geometry.location,
       title: name
     });
-
-    // infoWindows are the little helper windows that open when you click
-    // or hover over a pin on a map. They usually contain more information
-    // about a location.
-    var infoWindow = new google.maps.InfoWindow({
-      content: name
-    });
-
+    
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+      switch (marker.title) {
+        case "San Jose, CA, USA":
+          infowindow.content = sjo;
+          break;
+        case "Brookhaven, GA, USA":
+          infowindow.content = brook;
+          break;
+        case "Marietta, GA, USA":
+          infowindow.content = marietta;
+          break;
+        case "Lombard, IL, USA":
+          infowindow.content = lombard;
+          break;
+        case "River Grove, IL, USA":
+          infowindow.content = rgrove;
+          break;
+        default:
+          infowindow.content = probLost;
+      }
+      infowindow.open(map,marker);
     });
 
     // this is where the pin actually gets added to the map.
